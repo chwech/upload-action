@@ -135,6 +135,7 @@ test('upload files', async () => {
       multipartUploadThreshold: 4 * 1024 * 1024,
       bucketHosts: [],
       useInsecureProtocol: false,
+      workingDirectory: '.',
       artifacts: ['**/*']
     }, config)
     const allKeys = await listQiniuPrefix(mac, config, bucket, prefix)

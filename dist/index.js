@@ -12978,7 +12978,7 @@ exports.postMultipart = postMultipart;
 exports.postWithForm = postWithForm;
 exports.postWithoutForm = postWithoutForm;
 
-function addAuthHeaders(headers, mac) {
+function addAuthHeaders (headers, mac) {
     const xQiniuDate = util.formatDateUTC(new Date(), 'YYYYMMDDTHHmmssZ');
     if (mac.options.disableQiniuTimestampSignature !== null) {
         if (!mac.options.disableQiniuTimestampSignature) {
@@ -12994,7 +12994,7 @@ function addAuthHeaders(headers, mac) {
     return headers;
 }
 
-function getWithOptions(requestURI, options, callbackFunc) {
+function getWithOptions (requestURI, options, callbackFunc) {
     let headers = options.headers || {};
     const mac = options.mac || new digest.Mac();
 
@@ -13021,7 +13021,7 @@ function getWithOptions(requestURI, options, callbackFunc) {
     return get(requestURI, headers, callbackFunc);
 }
 
-function getWithToken(requestUrl, token, callbackFunc) {
+function getWithToken (requestUrl, token, callbackFunc) {
     const headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
     };
@@ -13031,7 +13031,7 @@ function getWithToken(requestUrl, token, callbackFunc) {
     return get(requestUrl, headers, callbackFunc);
 }
 
-function postWithOptions(requestURI, requestForm, options, callbackFunc) {
+function postWithOptions (requestURI, requestForm, options, callbackFunc) {
     let headers = options.headers || {};
     const mac = options.mac || new digest.Mac();
 
@@ -13058,11 +13058,11 @@ function postWithOptions(requestURI, requestForm, options, callbackFunc) {
     return post(requestURI, requestForm, headers, callbackFunc);
 }
 
-function postMultipart(requestURI, requestForm, callbackFunc) {
+function postMultipart (requestURI, requestForm, callbackFunc) {
     return post(requestURI, requestForm, requestForm.headers(), callbackFunc);
 }
 
-function postWithForm(requestURI, requestForm, token, callbackFunc) {
+function postWithForm (requestURI, requestForm, token, callbackFunc) {
     const headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
     };
@@ -13072,7 +13072,7 @@ function postWithForm(requestURI, requestForm, token, callbackFunc) {
     return post(requestURI, requestForm, headers, callbackFunc);
 }
 
-function postWithoutForm(requestURI, token, callbackFunc) {
+function postWithoutForm (requestURI, token, callbackFunc) {
     const headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
     };
@@ -13082,7 +13082,7 @@ function postWithoutForm(requestURI, token, callbackFunc) {
     return post(requestURI, null, headers, callbackFunc);
 }
 
-function get(requestUrl, headers, callbackFunc) {
+function get (requestUrl, headers, callbackFunc) {
     headers = headers || {};
     headers['User-Agent'] = headers['User-Agent'] || conf.USER_AGENT;
     headers.Connection = 'keep-alive';
@@ -13110,7 +13110,7 @@ function get(requestUrl, headers, callbackFunc) {
     );
 }
 
-function post(requestUrl, requestForm, headers, callbackFunc) {
+function post (requestUrl, requestForm, headers, callbackFunc) {
     // var start = parseInt(Date.now() / 1000);
     headers = headers || {};
     headers['User-Agent'] = headers['User-Agent'] || conf.USER_AGENT;
@@ -13148,7 +13148,7 @@ function post(requestUrl, requestForm, headers, callbackFunc) {
     );
 }
 
-function put(requestUrl, requestForm, headers, callbackFunc) {
+function put (requestUrl, requestForm, headers, callbackFunc) {
     // var start = parseInt(Date.now() / 1000);
     headers = headers || {};
     headers['User-Agent'] = headers['User-Agent'] || conf.USER_AGENT;
@@ -13626,7 +13626,7 @@ exports.PutExtra = PutExtra;
  * @param {conf.Config} [config]
  * @constructor
  */
-function FormUploader(config) {
+function FormUploader (config) {
     this.config = config || new conf.Config();
 
     // RetryPolicy API sign isn't stable not export to user
@@ -13646,7 +13646,7 @@ function FormUploader(config) {
  * @param {number | boolean} [checkCrc] 指定是否检测文件的crc32值
  * @param {Object} [metadata] 元数据设置，参数名称必须以 x-qn-meta-${name}: 开头
  */
-function PutExtra(
+function PutExtra (
     fname,
     params,
     mimeType,
@@ -13722,7 +13722,7 @@ FormUploader.prototype.putStream = function (
             });
         });
 
-    function sendPutReq(endpoint) {
+    function sendPutReq (endpoint) {
         const endpointValue = endpoint.getValue({
             scheme: preferScheme
         });
@@ -13748,7 +13748,7 @@ FormUploader.prototype.putStream = function (
  * @param {formstream} postForm
  * @param {reqCallback} callbackFunc
  */
-function putReq(upDomain, postForm, callbackFunc) {
+function putReq (upDomain, postForm, callbackFunc) {
     rpc.postMultipart(upDomain, postForm, callbackFunc);
 }
 
@@ -13794,7 +13794,7 @@ FormUploader.prototype.put = function (
             });
         });
 
-    function sendPutReq(endpoint) {
+    function sendPutReq (endpoint) {
         const fsStream = new Readable();
         fsStream.push(body);
         fsStream.push(null);
@@ -13845,7 +13845,7 @@ FormUploader.prototype.putWithoutKey = function (
  * @param {PutExtra | null} putExtra
  * @returns {formstream}
  */
-function createMultipartForm(uploadToken, key, fsStream, putExtra) {
+function createMultipartForm (uploadToken, key, fsStream, putExtra) {
     const postForm = formstream();
     postForm.field('token', uploadToken);
     if (key != null) {
@@ -13947,7 +13947,7 @@ FormUploader.prototype.putFile = function (
             });
         });
 
-    function sendPutReq(endpoint) {
+    function sendPutReq (endpoint) {
         const fsStream = fs.createReadStream(localFile);
         const endpointValue = endpoint.getValue({
             scheme: preferScheme
@@ -13992,7 +13992,7 @@ FormUploader.prototype.putFileWithoutKey = function (
  * @param {string} options.key
  * @return {PutExtra}
  */
-function getDefaultPutExtra(putExtra, options) {
+function getDefaultPutExtra (putExtra, options) {
     putExtra = putExtra || new PutExtra();
     if (!putExtra.mimeType) {
         putExtra.mimeType = 'application/octet-stream';
@@ -14045,7 +14045,7 @@ exports.TokenExpiredRetryPolicy = TokenExpiredRetryPolicy;
  * @param {string} [defaultScheme]
  * @returns {StaticEndpointsProvider}
  */
-function getDefaultQueryRegionEndpointsProvider(defaultScheme) {
+function getDefaultQueryRegionEndpointsProvider (defaultScheme) {
     defaultScheme = defaultScheme || 'https';
 
     /**
@@ -14064,7 +14064,7 @@ function getDefaultQueryRegionEndpointsProvider(defaultScheme) {
  * @param {string} [options.defaultScheme]
  * @returns {Promise<CachedRegionsProvider>}
  */
-function getDefaultRegionsProvider(options) {
+function getDefaultRegionsProvider (options) {
     let queryRegionsEndpointProvider = options.queryRegionsEndpointProvider;
     if (!queryRegionsEndpointProvider) {
         queryRegionsEndpointProvider = getDefaultQueryRegionEndpointsProvider(options.defaultScheme);
@@ -14103,7 +14103,7 @@ function getDefaultRegionsProvider(options) {
  * @param {string} options.accessKey
  * @returns {Promise<RegionsProvider>}
  */
-function prepareRegionsProvider(options) {
+function prepareRegionsProvider (options) {
     const {
         config,
         bucketName,
@@ -14115,7 +14115,6 @@ function prepareRegionsProvider(options) {
     if (regionsProvider) {
         return Promise.resolve(regionsProvider);
     }
-
 
     // backward compatibility with zone
     let zoneTtl;
@@ -14183,7 +14182,7 @@ function prepareRegionsProvider(options) {
  * @param {Object} [options]
  * @param {number} [options.maxRetryTimes]
  */
-function TokenExpiredRetryPolicy(options) {
+function TokenExpiredRetryPolicy (options) {
     options = options || {};
     this.id = Symbol(this.constructor.name);
     this.maxRetryTimes = options.maxRetryTimes || 1;
@@ -14277,7 +14276,7 @@ TokenExpiredRetryPolicy.prototype.prepareRetry = function (context, ret) {
  * @implements RetryPolicy
  * @constructor
  */
-function ChangeEndpointRetryPolicy() {
+function ChangeEndpointRetryPolicy () {
 }
 
 /**
@@ -14316,7 +14315,7 @@ ChangeEndpointRetryPolicy.prototype.prepareRetry = function (context, ret) {
  * @constructor
  * @implements RetryPolicy
  */
-function ChangeRegionRetryPolicy() {
+function ChangeRegionRetryPolicy () {
 }
 
 /**
@@ -14385,7 +14384,7 @@ ChangeRegionRetryPolicy.prototype.prepareRetry = function (context, ret) {
  * @param {'v1' | 'v2' | string} options.uploadApiVersion
  * @param {EndpointsProvider} [options.preferredEndpointsProvider]
  */
-function UploadState(options) {
+function UploadState (options) {
     this.retryPolicies = options.retryPolicies || [];
     this.regionsProvider = options.regionsProvider;
     this.preferredEndpointsProvider = options.preferredEndpointsProvider;
@@ -14529,7 +14528,7 @@ UploadState.prototype.prepareRetry = function (ret) {
  * @param {EndpointsProvider} [options.preferredEndpointsProvider]
  * @returns {Promise<RetryRet>}
  */
-function doWorkWithRetry(options) {
+function doWorkWithRetry (options) {
     const workFn = options.workFn;
 
     const callbackFunc = options.callbackFunc;
@@ -14603,7 +14602,7 @@ function doWorkWithRetry(options) {
 /**
  * @param {Error} e
  */
-function warningCallbackError(e) {
+function warningCallbackError (e) {
     console.warn(
         'WARNING:\n' +
         'qiniu SDK will migrate API to Promise style gradually.\n' +
@@ -15499,7 +15498,7 @@ BucketManager.prototype.stat = function (bucket, key, callbackFunc) {
     });
 };
 
-function statReq(mac, config, bucket, key, callbackFunc) {
+function statReq (mac, config, bucket, key, callbackFunc) {
     var scheme = config.useHttpsDomain ? 'https://' : 'http://';
     var statOp = exports.statOp(bucket, key);
     var requestURI = scheme + config.zone.rsHost + statOp;
@@ -15739,7 +15738,7 @@ BucketManager.prototype.setObjectLifeCycle = function (
     });
 };
 
-function setObjectLifecycleReq(mac, config, bucket, key, options, callbackFunc) {
+function setObjectLifecycleReq (mac, config, bucket, key, options, callbackFunc) {
     const scheme = config.useHttpsDomain ? 'https://' : 'http://';
     const setObjectLifecycleOp = exports.setObjectLifecycleOp(bucket, key, options);
     const requestUrl = scheme + config.zone.rsHost + setObjectLifecycleOp;
@@ -15906,7 +15905,7 @@ BucketManager.prototype.listPrefix = function (bucket, options, callbackFunc) {
     });
 };
 
-function listPrefixReq(mac, config, bucket, options, callbackFunc) {
+function listPrefixReq (mac, config, bucket, options, callbackFunc) {
     options = options || {};
     // 必须参数
     const reqParams = {
@@ -15974,7 +15973,7 @@ BucketManager.prototype.listPrefixV2 = function (bucket, options, callbackFunc) 
     });
 };
 
-function listPrefixReqV2(mac, config, bucket, options, callbackFunc) {
+function listPrefixReqV2 (mac, config, bucket, options, callbackFunc) {
     options = options || {};
     // 必须参数
     const reqParams = {
@@ -16050,7 +16049,7 @@ BucketManager.prototype.batch = function (operations, callbackFunc) {
     });
 };
 
-function batchReq(mac, config, operations, callbackFunc) {
+function batchReq (mac, config, operations, callbackFunc) {
     const scheme = config.useHttpsDomain ? 'https://' : 'http://';
     const requestURI = scheme + config.zone.rsHost + '/batch';
     const reqParams = {
@@ -16268,7 +16267,7 @@ BucketManager.prototype.putBucketLifecycleRule = function (bucket, options,
     PutBucketLifecycleRule(this.mac, this.config, bucket, options, callbackFunc);
 };
 
-function PutBucketLifecycleRule(mac, config, bucket, options, callbackFunc) {
+function PutBucketLifecycleRule (mac, config, bucket, options, callbackFunc) {
     options = options || {};
     const reqParams = {
         bucket: bucket,
@@ -16820,7 +16819,7 @@ BucketManager.prototype.restoreAr = function (entry, freezeAfterDays, callbackFu
     });
 };
 
-function restoreArReq(mac, config, entry, freezeAfterDays, callbackFunc) {
+function restoreArReq (mac, config, entry, freezeAfterDays, callbackFunc) {
     const scheme = config.useHttpsDomain ? 'https://' : 'http://';
     const requestURI = scheme + config.zone.rsHost + '/restoreAr/' + util.urlsafeBase64Encode(entry) + '/freezeAfterDays/' + freezeAfterDays;
     rpc.postWithOptions(
@@ -49824,6 +49823,7 @@ function getInputs() {
     const bucketHosts = core.getMultilineInput(inputs_1.InputsFieldNames.BucketHosts);
     const uploadHosts = core.getMultilineInput(inputs_1.InputsFieldNames.UploadHosts);
     const useInsecureProtocol = core.getBooleanInput(inputs_1.InputsFieldNames.UseInsecureProtocol);
+    const workingDirectory = core.getInput(inputs_1.InputsFieldNames.WorkingDirectory);
     const artifacts = core.getMultilineInput(inputs_1.InputsFieldNames.Artifacts);
     const re = /^(([a-zA-Z0-9_-])+(.)?)*(:\d+)?$/;
     for (const host of bucketHosts) {
@@ -49868,6 +49868,7 @@ function getInputs() {
         bucketHosts,
         region,
         useInsecureProtocol,
+        workingDirectory,
         artifacts
     };
 }
@@ -49897,6 +49898,7 @@ var InputsFieldNames;
     InputsFieldNames["BucketHosts"] = "bucket_hosts";
     InputsFieldNames["UploadHosts"] = "upload_hosts";
     InputsFieldNames["UseInsecureProtocol"] = "use_insecure_protocol";
+    InputsFieldNames["WorkingDirectory"] = "working_directory";
     InputsFieldNames["Artifacts"] = "artifacts";
 })(InputsFieldNames || (exports.InputsFieldNames = InputsFieldNames = {}));
 
@@ -49949,18 +49951,20 @@ async function uploadGlobs(inputs, config) {
             includeArtifacts.push(artifact);
         }
     }
-    const localFiles = await (0, glob_1.glob)(includeArtifacts, { ignore: excludeArtifacts, nodir: true });
+    const cwd = path.resolve(inputs.workingDirectory);
+    const localFiles = await (0, glob_1.glob)(includeArtifacts, { ignore: excludeArtifacts, nodir: true, cwd });
     const semaphore = new semaphore_promise_1.Semaphore(inputs.concurrency);
     const restPromises = new Set();
     let error;
     for (const localFile of localFiles) {
         const release = await semaphore.acquire();
+        const absoluteLocalFile = path.resolve(cwd, localFile);
         let posixLocalFile = localFile;
         if (path.sep !== path.posix.sep) {
             posixLocalFile = localFile.split(path.sep).join(path.posix.sep);
         }
         const remoteFile = inputs.prefix + posixLocalFile;
-        const p = doUploadTask({ localFile, remoteFile }, {
+        const p = doUploadTask({ localFile: absoluteLocalFile, remoteFile }, {
             bucket: inputs.bucket,
             mac: new qiniu.auth.digest.Mac(inputs.accessKey, inputs.secretKey),
             fileType: inputs.fileType,

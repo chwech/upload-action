@@ -15,6 +15,7 @@ export function getInputs (): Inputs {
   const bucketHosts = core.getMultilineInput(InputsFieldNames.BucketHosts)
   const uploadHosts = core.getMultilineInput(InputsFieldNames.UploadHosts)
   const useInsecureProtocol = core.getBooleanInput(InputsFieldNames.UseInsecureProtocol)
+  const workingDirectory = core.getInput(InputsFieldNames.WorkingDirectory)
   const artifacts = core.getMultilineInput(InputsFieldNames.Artifacts)
 
   const re = /^(([a-zA-Z0-9_-])+(.)?)*(:\d+)?$/
@@ -64,6 +65,7 @@ export function getInputs (): Inputs {
     bucketHosts,
     region,
     useInsecureProtocol,
+    workingDirectory,
     artifacts
   }
 }

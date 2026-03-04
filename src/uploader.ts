@@ -31,18 +31,20 @@ export async function uploadGlobs (inputs: Inputs, config: qiniu.conf.Config): P
       includeArtifacts.push(artifact)
     }
   }
-  const localFiles = await glob(includeArtifacts, { ignore: excludeArtifacts, nodir: true })
+  const cwd = path.resolve(inputs.workingDirectory)
+  const localFiles = await glob(includeArtifacts, { ignore: excludeArtifacts, nodir: true, cwd })
   const semaphore = new Semaphore(inputs.concurrency)
   const restPromises = new Set()
   let error: Error | undefined
   for (const localFile of localFiles) {
     const release = await semaphore.acquire()
+    const absoluteLocalFile = path.resolve(cwd, localFile)
     let posixLocalFile = localFile
     if (path.sep !== path.posix.sep) {
       posixLocalFile = localFile.split(path.sep).join(path.posix.sep)
     }
     const remoteFile = inputs.prefix + posixLocalFile
-    const p = doUploadTask({ localFile, remoteFile }, {
+    const p = doUploadTask({ localFile: absoluteLocalFile, remoteFile }, {
       bucket: inputs.bucket,
       mac: new qiniu.auth.digest.Mac(inputs.accessKey, inputs.secretKey),
       fileType: inputs.fileType,

@@ -13,6 +13,7 @@ export enum InputsFieldNames {
   BucketHosts = 'bucket_hosts',
   UploadHosts = 'upload_hosts',
   UseInsecureProtocol = 'use_insecure_protocol',
+  WorkingDirectory = 'working_directory',
   Artifacts = 'artifacts',
 }
 
@@ -56,6 +57,9 @@ export interface Inputs {
 
   // Use HTTP protocol
   useInsecureProtocol: boolean
+
+  // Working directory for resolving artifacts glob patterns
+  workingDirectory: string
 
   // Files glob to archive
   artifacts: string[]
