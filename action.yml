@@ -53,7 +53,7 @@ inputs:
     type: boolean
   artifacts:
     description: 'Files glob to archive'
-    required: 'true'
+    required: true
     type: string
 runs:
   using: 'node20'
