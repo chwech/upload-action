@@ -50002,7 +50002,7 @@ async function doUploadTask(task, properties) {
 }
 async function doUploadByForm(task, properties) {
     const formUploader = new qiniu.form_up.FormUploader(properties.config);
-    await formUploader.putFile(makeUploadToken(properties), task.remoteFile, task.localFile, {
+    await formUploader.putFile(makeUploadToken(properties, task.remoteFile), task.remoteFile, task.localFile, {
         fname: path.basename(task.localFile),
         params: {},
         checkCrc: true
@@ -50010,15 +50010,16 @@ async function doUploadByForm(task, properties) {
 }
 async function doUploadByMultiparts(task, properties) {
     const resumeUploader = new qiniu.resume_up.ResumeUploader(properties.config);
-    await resumeUploader.putFile(makeUploadToken(properties), task.remoteFile, task.localFile, {
+    await resumeUploader.putFile(makeUploadToken(properties, task.remoteFile), task.remoteFile, task.localFile, {
         fname: path.basename(task.localFile),
         params: {},
         partSize: properties.multipartUploadPartSize,
         version: 'v2'
     }, () => { });
 }
-function makeUploadToken(properties) {
-    const options = { scope: properties.bucket, expires: 3600, fileType: properties.fileType };
+function makeUploadToken(properties, key) {
+    const scope = properties.overwrite ? `${properties.bucket}:${key}` : properties.bucket;
+    const options = { scope, expires: 3600, fileType: properties.fileType };
     if (!properties.overwrite) {
         options.insertOnly = 1;
     }

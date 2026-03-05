@@ -83,7 +83,7 @@ async function doUploadTask (task: UploadTask, properties: UploadProperties): Pr
 async function doUploadByForm (task: UploadTask, properties: UploadProperties): Promise<void> {
   const formUploader = new qiniu.form_up.FormUploader(properties.config)
   await formUploader.putFile(
-    makeUploadToken(properties),
+    makeUploadToken(properties, task.remoteFile),
     task.remoteFile,
     task.localFile,
     {
@@ -98,7 +98,7 @@ async function doUploadByForm (task: UploadTask, properties: UploadProperties): 
 async function doUploadByMultiparts (task: UploadTask, properties: UploadProperties): Promise<void> {
   const resumeUploader = new qiniu.resume_up.ResumeUploader(properties.config)
   await resumeUploader.putFile(
-    makeUploadToken(properties),
+    makeUploadToken(properties, task.remoteFile),
     task.remoteFile,
     task.localFile,
     {
@@ -111,8 +111,9 @@ async function doUploadByMultiparts (task: UploadTask, properties: UploadPropert
   )
 }
 
-function makeUploadToken (properties: UploadProperties): string {
-  const options: qiniu.rs.PutPolicyOptions = { scope: properties.bucket, expires: 3600, fileType: properties.fileType }
+function makeUploadToken (properties: UploadProperties, key: string): string {
+  const scope = properties.overwrite ? `${properties.bucket}:${key}` : properties.bucket
+  const options: qiniu.rs.PutPolicyOptions = { scope, expires: 3600, fileType: properties.fileType }
   if (!properties.overwrite) {
     options.insertOnly = 1
   }
